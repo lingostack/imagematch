@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import BASE_URL from "../API/BASE_URL";
-import Paginate from "../Components/Paginate"
+import Paginate from "../Components/Paginate";
 import Breadcrumbs from "../Components/Breadcrumbs";
 import { useHistory } from "react-router";
 import constant from "../Constants/EnglishScreens.json";
@@ -25,6 +25,7 @@ export default function Versions(props) {
   const [screenshotsEN, setScreenshotsEN] = useState([]);
   const [itemCount, setItemCount] = useState();
   const [previousProductId] = useState(props.match.params.productid);
+  const [changeLayout, setChangeLayout] = useState();
   let history = useHistory();
 
   function handleDropdownChangeVersion(e) {
@@ -32,26 +33,33 @@ export default function Versions(props) {
   }
 
   function handleDropdownChangeLocale(e) {
-    setSelectLocales(e)
+    setSelectLocales(e);
   }
 
   //To get Versions and Locales of selected Product
   React.useEffect(() => {
     const fetchProductsVersionData = async () => {
-      const productsVersionData = await axios(`${BASE_URL}/products/${previousProductId}/product_versions`).catch(e => { console.error(e) });
+      const productsVersionData = await axios(
+        `${BASE_URL}/products/${previousProductId}/product_versions`
+      ).catch((e) => {
+        console.error(e);
+      });
 
-      const LocalesData = await axios(`${BASE_URL}/locales`).catch(e => { console.error(e) });
+      const LocalesData = await axios(`${BASE_URL}/locales`).catch((e) => {
+        console.error(e);
+      });
 
       //Return to Products if no version for selected Product is available
       if (productsVersionData.data.length !== 0) {
         setProductsVersion(productsVersionData.data);
-        setLocales(LocalesData.data)
-      }
-      else {
-        alert(" No Versions available for selected Product. Please select other Product");
+        setLocales(LocalesData.data);
+      } else {
+        alert(
+          " No Versions available for selected Product. Please select other Product"
+        );
         history.push({
-          pathname: "/"
-        })
+          pathname: "/",
+        });
       }
     };
     fetchProductsVersionData();
@@ -65,76 +73,92 @@ export default function Versions(props) {
       const screenshotsData = await axios(`${BASE_URL}/screenshots`, {
         params: {
           product_version_id: selectProductsVersion,
-          locale_id: selectLocales
+          locale_id: selectLocales,
         },
-      })
+      });
       const screenshotsENData = await axios(`${BASE_URL}/screenshots`, {
         params: {
           product_version_id: selectProductsVersion,
           locale_id: constant.englishLocaleId,
         },
-      })
+      });
       if (!screenshotsENData.data.length) {
-        alert("The selected Version have no English Screenshots")
-      }
-      else {
+        alert("The selected Version have no English Screenshots");
+      } else {
         setScreenshotsOther(screenshotsData.data);
         setScreenshotsEN(screenshotsENData.data);
         setItemCount(screenshotsENData.data[0].images.length);
       }
-    }
-    catch (err) {
+    } catch (err) {
       error = err;
     }
-  }
+  };
+
+  const onHandleLayout = async (name) => {
+    if (name === "Horizontal") {
+      setChangeLayout(true);
+    } else {
+      if (name === "Vertical") setChangeLayout(false);
+    }
+  };
+
   return (
     <>
       <PageSection variant={PageSectionVariants.light}>
         <Breadcrumbs />
-        {locales && productsVersion &&
+        {locales &&
+          productsVersion &&
           ((screenshotsOther && screenshotsOther.length !== 0) ||
-            (screenshotsEN && screenshotsEN.length !== 0)) &&
-          (
+            (screenshotsEN && screenshotsEN.length !== 0)) && (
             <PaginateForm
               selectProductsVersion={selectProductsVersion}
               selectLocales={selectLocales}
               productsVersion={productsVersion}
               locales={locales}
-              handleVersionChange={(e, event) => handleDropdownChangeVersion(e, event)}
-              handleLocaleChange={(e, event) => handleDropdownChangeLocale(e, event)}
+              screenshotsOther={screenshotsOther}
+              handleVersionChange={(e, event) =>
+                handleDropdownChangeVersion(e, event)
+              }
+              handleLocaleChange={(e, event) =>
+                handleDropdownChangeLocale(e, event)
+              }
               handleSubmit={onFormSubmit}
+              handleLayout={onHandleLayout}
             />
           )}
       </PageSection>
       <PageSection>
         {(screenshotsOther && screenshotsOther.length !== 0) ||
-          (screenshotsEN && screenshotsEN.length !== 0) ?
-          (
-            <Paginate
-              screenshotsOther={screenshotsOther}
-              screenshotsEN={screenshotsEN}
-              itemCount={itemCount}
-              elements={elements}
-              elementsRight={elementsRight}
-              elementsLeft={elementsLeft}
-              offset={offset}
-              currentPage={currentPage}
-              page={page}
-              perPage={perPage}
+        (screenshotsEN && screenshotsEN.length !== 0) ? (
+          <Paginate
+            screenshotsOther={screenshotsOther}
+            screenshotsEN={screenshotsEN}
+            itemCount={itemCount}
+            elements={elements}
+            elementsRight={elementsRight}
+            elementsLeft={elementsLeft}
+            offset={offset}
+            currentPage={currentPage}
+            page={page}
+            perPage={perPage}
+            changeLayout={changeLayout}
+          />
+        ) : (
+          locales &&
+          productsVersion && (
+            <SimpleForm
+              productsVersion={productsVersion}
+              locales={locales}
+              handleVersionChange={(e, event) =>
+                handleDropdownChangeVersion(e, event)
+              }
+              handleLocaleChange={(e, event) =>
+                handleDropdownChangeLocale(e, event)
+              }
+              handleSubmit={onFormSubmit}
             />
-          ) :
-          (
-            locales && productsVersion &&
-            (
-              <SimpleForm
-                productsVersion={productsVersion}
-                locales={locales}
-                handleVersionChange={(e, event) => handleDropdownChangeVersion(e, event)}
-                handleLocaleChange={(e, event) => handleDropdownChangeLocale(e, event)}
-                handleSubmit={onFormSubmit}
-              />
-            ))
-        }
+          )
+        )}
       </PageSection>
     </>
   );

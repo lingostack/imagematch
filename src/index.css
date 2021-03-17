@@ -16,3 +16,10 @@
   margin-left: 20%;
   margin-right: 20%;
 }
+img:hover {
+  box-shadow: 0 0 4px 2px black;
+}
+
+.layout {
+  left: 95vh;
+}
