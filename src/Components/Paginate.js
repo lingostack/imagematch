@@ -82,7 +82,14 @@ export default function Paginate(props) {
       }
     };
     SetImages();
-  }, [offset, perPage, screenshotsEN, screenshotsOther]);
+  }, [
+    offset,
+    perPage,
+    screenshotsEN,
+    screenshotsOther,
+    props.screenshotsEN,
+    props.screenshotsOther,
+  ]);
 
   const paginateEN = () => (
     <>
@@ -101,7 +108,7 @@ export default function Paginate(props) {
       />
       <div className="en_screens mb-4">
         {elementsLeft.map((image, index) => (
-          <div>
+          <div key={index}>
             <div>
               <Badge id={IdL++}>id: {IdL}</Badge>
             </div>
@@ -148,11 +155,16 @@ export default function Paginate(props) {
               <SplitItem>
                 <div>
                   {elementsLeft.map((image, index) => (
-                    <div>
+                    <div key={index + 1}>
                       <div>
                         <Badge id={IdL++}>id: {IdL}</Badge>
                       </div>
-                      <img src={image} alt="" key={index} className="image" />
+                      <img
+                        src={image}
+                        alt=""
+                        key={index + 1}
+                        className="image"
+                      />
                     </div>
                   ))}
                 </div>
@@ -164,11 +176,16 @@ export default function Paginate(props) {
               <SplitItem>
                 <div>
                   {elementsRight.map((image, index) => (
-                    <div>
+                    <div key={index + 2}>
                       <div>
                         <Badge id={IdR++}>id: {IdR}</Badge>
                       </div>
-                      <img src={image} alt="" key={index} className="image" />
+                      <img
+                        src={image}
+                        alt=""
+                        key={index + 2}
+                        className="image"
+                      />
                     </div>
                   ))}
                 </div>
