@@ -37,10 +37,10 @@ export default function PaginateForm(props) {
                   ? selectProductsVersion
                   : props.selectProductsVersion
               }
-              onChange={(e, event) => (
-                props.handleVersionChange(e, event),
-                setSelectProductsVersion(e, event)
-              )}
+              onChange={(e, event) => {
+                props.handleVersionChange(e, event);
+                setSelectProductsVersion(e, event);
+              }}
               aria-label="Version"
               id="version"
               name="version"
@@ -61,9 +61,10 @@ export default function PaginateForm(props) {
           <DataToolbarItem>
             <FormSelect
               value={selectLocales ? selectLocales : props.selectLocales}
-              onChange={(e, event) => (
-                props.handleLocaleChange(e, event), setSelectLocales(e, event)
-              )}
+              onChange={(e, event) => {
+                props.handleLocaleChange(e, event);
+                setSelectLocales(e, event);
+              }}
               aria-label="Locale"
               id="locale"
               name="locale"

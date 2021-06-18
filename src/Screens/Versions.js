@@ -10,13 +10,13 @@ import PaginateForm from "../Components/PaginateForm";
 import { PageSection, PageSectionVariants } from "@patternfly/react-core";
 
 export default function Versions(props) {
-  const [elementsRight, setElementsRight] = useState([]);
-  const [elementsLeft, setElementsLeft] = useState([]);
-  const [elements, setElements] = useState([]);
-  const [offset, setOffset] = useState(0);
-  const [currentPage, setCurrentPage] = useState(0);
-  const [page, setPage] = useState(1);
-  const [perPage, setPerPage] = useState(10);
+  const [elementsRight] = useState([]);
+  const [elementsLeft] = useState([]);
+  const [elements] = useState([]);
+  const [offset] = useState(0);
+  const [currentPage] = useState(0);
+  const [page] = useState(1);
+  const [perPage] = useState(10);
   const [productsVersion, setProductsVersion] = useState([]);
   const [locales, setLocales] = useState([]);
   const [selectProductsVersion, setSelectProductsVersion] = useState("");
@@ -63,12 +63,11 @@ export default function Versions(props) {
       }
     };
     fetchProductsVersionData();
-  }, [previousProductId]);
+  }, [previousProductId, history]);
 
   // To get selected Version and Locale to get screenshots
   const onFormSubmit = async (event) => {
     event.preventDefault();
-    let error;
     try {
       const screenshotsData = await axios(`${BASE_URL}/screenshots`, {
         params: {
@@ -90,7 +89,7 @@ export default function Versions(props) {
         setItemCount(screenshotsENData.data[0].images.length);
       }
     } catch (err) {
-      error = err;
+      return err;
     }
   };
 
