@@ -5,7 +5,7 @@ import {
   FormSelectOption,
   Button,
   DataToolbarContent,
-  DataToolbarItem
+  DataToolbarItem,
 } from "@patternfly/react-core";
 
 export default function PaginateForm(props) {
@@ -20,11 +20,19 @@ export default function PaginateForm(props) {
           </DataToolbarItem>
           <DataToolbarItem>
             <FormSelect
-              value={selectProductsVersion ? selectProductsVersion : props.selectProductsVersion}
-              onChange={(e, event) => (props.handleVersionChange(e, event), setSelectProductsVersion(e, event))}
+              value={
+                selectProductsVersion
+                  ? selectProductsVersion
+                  : props.selectProductsVersion
+              }
+              onChange={(e, event) => {
+                props.handleVersionChange(e, event);
+                setSelectProductsVersion(e, event);
+              }}
               aria-label="Version"
               id="version"
-              name="version">
+              name="version"
+            >
               <option>Select</option>
               {props.productsVersion.map((option, index) => (
                 <FormSelectOption
@@ -37,14 +45,18 @@ export default function PaginateForm(props) {
           </DataToolbarItem>
           <DataToolbarItem variant="label" id="locale">
             Select a Locale
-                </DataToolbarItem>
+          </DataToolbarItem>
           <DataToolbarItem>
             <FormSelect
               value={selectLocales ? selectLocales : props.selectLocales}
-              onChange={(e, event) => (props.handleLocaleChange(e, event), setSelectLocales(e, event))}
+              onChange={(e, event) => {
+                props.handleLocaleChange(e, event);
+                setSelectLocales(e, event);
+              }}
               aria-label="Locale"
               id="locale"
-              name="locale">
+              name="locale"
+            >
               <option>Select</option>
               {props.locales.map((option, index) => (
                 <FormSelectOption
@@ -56,10 +68,12 @@ export default function PaginateForm(props) {
             </FormSelect>
           </DataToolbarItem>
           <DataToolbarItem>
-            <Button type="submit" value="Submit">Submit</Button>
+            <Button type="submit" value="Submit">
+              Submit
+            </Button>
           </DataToolbarItem>
         </DataToolbarContent>
       </Form>
     </>
-  )
+  );
 }
