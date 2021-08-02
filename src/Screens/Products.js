@@ -10,7 +10,7 @@ import {
   TextVariants,
   Grid,
   PageSection,
-} from "@patternfly/react-core";
+} from "@patternfly/react-core-latest";
 
 export default function Products() {
   const [products, setProducts] = useState([]);
@@ -24,7 +24,7 @@ export default function Products() {
 
   return (
     <PageSection>
-      <Grid gutter="lg" sm={6} md={3}>
+      <Grid hasGutter gutter="lg" sm={6} md={3}>
         {products.map((product) => {
           return (
             <Card className="product-card" key={product.id} isHoverable>
