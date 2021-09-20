@@ -4,27 +4,35 @@ import {
   FormSelect,
   FormSelectOption,
   Button,
-  DataToolbarContent,
-  DataToolbarItem
-} from "@patternfly/react-core";
+  ToolbarContent,
+  ToolbarItem,
+} from "@patternfly/react-core-latest";
 
-export default function PaginateForm(props) {
+function PaginateForm(props) {
   const [selectProductsVersion, setSelectProductsVersion] = useState("");
   const [selectLocales, setSelectLocales] = useState("");
   return (
     <>
       <Form onSubmit={props.handleSubmit}>
-        <DataToolbarContent>
-          <DataToolbarItem variant="label" id="version">
+        <ToolbarContent>
+          <ToolbarItem variant="label" id="version">
             Select a Version
-          </DataToolbarItem>
-          <DataToolbarItem>
+          </ToolbarItem>
+          <ToolbarItem>
             <FormSelect
-              value={selectProductsVersion ? selectProductsVersion : props.selectProductsVersion}
-              onChange={(e, event) => (props.handleVersionChange(e, event), setSelectProductsVersion(e, event))}
+              value={
+                selectProductsVersion
+                  ? selectProductsVersion
+                  : props.selectProductsVersion
+              }
+              onChange={(e, event) => {
+                props.handleVersionChange(e, event);
+                setSelectProductsVersion(e, event);
+              }}
               aria-label="Version"
               id="version"
-              name="version">
+              name="version"
+            >
               <option>Select</option>
               {props.productsVersion.map((option, index) => (
                 <FormSelectOption
@@ -34,17 +42,22 @@ export default function PaginateForm(props) {
                 />
               ))}
             </FormSelect>
-          </DataToolbarItem>
-          <DataToolbarItem variant="label" id="locale">
+          </ToolbarItem>
+          <ToolbarItem variant="label" id="locale">
             Select a Locale
-                </DataToolbarItem>
-          <DataToolbarItem>
+          </ToolbarItem>
+          <ToolbarItem>
             <FormSelect
+            width="auto"
               value={selectLocales ? selectLocales : props.selectLocales}
-              onChange={(e, event) => (props.handleLocaleChange(e, event), setSelectLocales(e, event))}
+              onChange={(e, event) => {
+                props.handleLocaleChange(e, event);
+                setSelectLocales(e, event);
+              }}
               aria-label="Locale"
               id="locale"
-              name="locale">
+              name="locale"
+            >
               <option>Select</option>
               {props.locales.map((option, index) => (
                 <FormSelectOption
@@ -54,12 +67,16 @@ export default function PaginateForm(props) {
                 />
               ))}
             </FormSelect>
-          </DataToolbarItem>
-          <DataToolbarItem>
-            <Button type="submit" value="Submit">Submit</Button>
-          </DataToolbarItem>
-        </DataToolbarContent>
+          </ToolbarItem>
+          <ToolbarItem>
+            <Button type="submit" value="Submit">
+              Submit
+            </Button>
+          </ToolbarItem>
+        </ToolbarContent>
       </Form>
     </>
-  )
+  );
 }
+
+export default PaginateForm
